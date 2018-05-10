@@ -10,10 +10,10 @@ class Board extends Component {
         const y = 150;
         const hSpacing = 15;
         const vSpacing = 25;
-        const boardHMargin = 6 * hSpacing;
+        const boardHMargin = 4 * hSpacing;
         const boxWidth = 100;
         const boxHeight = 120;
-        const dishWidth = 100;
+        const dishWidth = 120;
         const dishHeight = (2 * boxHeight) + vSpacing;
         const dish1Left = x + boardHMargin;
         const boxesLeft = dish1Left + dishWidth + hSpacing;
@@ -102,7 +102,9 @@ function Background(props) {
 }
 function Dish(props) {
     return (
-        <Rect
+        <Ellipse
+            offsetY={-(props.height / 2)}
+            offsetX={-(props.width / 2)}
             x={props.x}
             y={props.y}
             width={props.width}
