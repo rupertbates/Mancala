@@ -204,7 +204,8 @@ function CounterText(props) {
             y={props.y} //Hack to get the text placing right
             width={props.width}
             height={props.height}
-            fontSize={22}
+            fontSize={24}
+            fill='white'
             align='center'
             fontFamily='Calibri'
         />

@@ -5,15 +5,33 @@ import Board from './Board';
 
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      width: 1600, 
+      height: 600,
+    }
+  }
   render() {
     return (
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage width={this.state.width} height={this.state.height}>
         <Layer>
           <Board />
         </Layer>
       </Stage>
     );
   }
+
+  // resize(){
+  //   this.setState({
+  //     width: window.innerWidth, 
+  //     height: window.innerHeight,
+  //   });
+  // }
+
+  // componentDidMount(){
+  //   window.addEventListener("resize", this.resize.bind(this));
+  // }
 }
 
 function Test2() {
