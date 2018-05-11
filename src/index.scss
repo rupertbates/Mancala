@@ -1,10 +1,15 @@
+$cell-height: 140px;
+$dish-height: $cell-height * 2;
+$hSpacing: 10px;
+$dish-color: #ced130;
+
 body {
   text-align: center;
   color: white;
   font-size: 24px;
-  background-color: #bbb; }
-
-.board {
+  background-color: #bbb;
+}
+.board{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -13,45 +18,48 @@ body {
   max-width: 1200px;
   background: #1d6a82;
   padding: 30px 50px;
-  border-radius: 560px;
-  border: solid 4px #105870; }
-
-.both-rows {
+  border-radius: $cell-height * 4;
+  border: solid 4px #105870;
+}
+.both-rows{
   width: 72%;
   float: left;
-  border-radius: 20px; }
-
+  //background: yellow;
+  border-radius: 20px;
+}
 .row {
   float: left;
   width: 100%;
-  display: table-row; }
+  display: table-row;
+}
 
-.dish {
+.dish{
   width: 10%;
   margin-left: 2%;
   margin-right: 2%;
   margin-top: 1%;
   float: left;
-  background: #ced130;
-  height: 280px;
-  line-height: 280px;
+  background: $dish-color;
+  height: $dish-height;
+  line-height: $dish-height;
   border-radius: 80%;
   box-sizing: border-box;
-  border: solid 2px #105870; }
-
-.box {
+  border: solid 2px #105870;
+}
+.box{
   float: left;
   width: 14.66666666%;
   margin: 1%;
-  height: 140px;
-  line-height: 140px;
-  background: #ced130;
+  height: $cell-height;
+  line-height: $cell-height;
+  background: $dish-color;
   box-sizing: border-box;
   border: solid 2px #105870;
-  border-radius: 60px; }
-
+  border-radius: 60px;
+}
 .counters {
   background: #f55;
   padding: 10px 20px;
   border-radius: 50px;
-  border: solid 2px #a33; }
+  border: solid 2px #a33;
+}

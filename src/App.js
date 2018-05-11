@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Stage, RegularPolygon, Group, Layer, Rect, Text } from 'react-konva';
 import Konva from 'konva';
 import Board from './Board';
+import HtmlBoard from './HtmlBoard';
 
 
 class App extends Component {
@@ -14,24 +15,14 @@ class App extends Component {
   }
   render() {
     return (
-      <Stage width={this.state.width} height={this.state.height}>
-        <Layer>
-          <Board />
-        </Layer>
-      </Stage>
+      <HtmlBoard />
+      // <Stage width={this.state.width} height={this.state.height}>
+      //   <Layer>
+      //     <Board />
+      //   </Layer>
+      // </Stage>
     );
   }
-
-  // resize(){
-  //   this.setState({
-  //     width: window.innerWidth, 
-  //     height: window.innerHeight,
-  //   });
-  // }
-
-  // componentDidMount(){
-  //   window.addEventListener("resize", this.resize.bind(this));
-  // }
 }
 
 function Test2() {
