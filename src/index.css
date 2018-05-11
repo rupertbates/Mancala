@@ -50,8 +50,79 @@ body {
   border: solid 2px #105870;
   border-radius: 60px; }
 
+.box:hover {
+  background-color: #d8da5a; }
+
 .counters {
   background: #f55;
   padding: 10px 20px;
   border-radius: 50px;
   border: solid 2px #a33; }
+
+.counters:hover {
+  transform: scale(1.5, 1.5); }
+
+.ball {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  margin-left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 14px 16px, #f68191, #ef7680 10%, #94050c 80%, #45060b 100%); }
+
+.ball-hover:hover {
+  background: radial-gradient(circle at 14px 16px, #f899a6, #f28d95 10%, #ad060e 80%, #5c080f 100%); }
+
+.ball:before {
+  content: "";
+  position: absolute;
+  background: radial-gradient(circle at 5px 0px, #ffffff, rgba(255, 255, 255, 0) 18%);
+  border-radius: 50%;
+  bottom: 2.5%;
+  left: 5%;
+  opacity: 0.6;
+  height: 60px;
+  width: 60px;
+  -webkit-filter: blur(5px);
+  z-index: 2; }
+
+.ball:after {
+  width: 60px;
+  height: 60px;
+  content: "";
+  border-radius: 50%;
+  background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8) 14%, rgba(255, 255, 255, 0) 24%);
+  -webkit-transform: translateX(-80px) translateY(-90px) skewX(-20deg);
+  -moz-transform: translateX(-80px) translateY(-90px) skewX(-20deg);
+  -ms-transform: translateX(-80px) translateY(-90px) skewX(-20deg);
+  -o-transform: translateX(-80px) translateY(-90px) skewX(-20deg);
+  transform: translateX(-8px) translateY(-9px) skewX(-20deg);
+  -webkit-filter: blur(10px); }
+
+.ball .shadow {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
+  -webkit-transform: rotateX(90deg) translateZ(-150px);
+  -moz-transform: rotateX(90deg) translateZ(-150px);
+  -ms-transform: rotateX(90deg) translateZ(-150px);
+  -o-transform: rotateX(90deg) translateZ(-150px);
+  transform: rotateX(50deg) translateX(-20px) translateZ(-30px);
+  z-index: -1; }
+
+.stage {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  -webkit-perspective: 1200px;
+  -moz-perspective: 1200px;
+  -ms-perspective: 1200px;
+  -o-perspective: 1200px;
+  perspective: 1200px;
+  -webkit-perspective-origin: 50% 50%;
+  -moz-perspective-origin: 50% 50%;
+  -ms-perspective-origin: 50% 50%;
+  -o-perspective-origin: 50% 50%;
+  perspective-origin: 50% 50%; }

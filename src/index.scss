@@ -57,9 +57,19 @@ body {
   border: solid 2px #105870;
   border-radius: 60px;
 }
+
+.box:hover{
+  background-color: lighten($dish-color, 10%);
+}
 .counters {
   background: #f55;
   padding: 10px 20px;
   border-radius: 50px;
   border: solid 2px #a33;
 }
+
+.counters:hover {
+  transform: scale(1.5, 1.5);
+}
+
+@import '_glass-ball'

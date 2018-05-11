@@ -18,14 +18,6 @@ class HtmlBoard extends Component {
         };
     }
 
-    createBox(i, offset, counters) {
-        return {
-            layoutIndex: i,
-            gameIndex: i + offset,
-            counters: counters[i + offset],
-        }
-    }
-
     render() {
         //this.logGame();
         const indexes = [...Array(6).keys()];
@@ -36,7 +28,7 @@ class HtmlBoard extends Component {
             <Background>
                 <Dish
                     index={0}
-                    counters={this.state.gameState.counters[dish1Index].toString()}
+                    counters={this.state.gameState.counters[dish1Index]}
                 />
                 <div className="both-rows">
                     <div className="row">
@@ -48,16 +40,17 @@ class HtmlBoard extends Component {
                 </div>
                 <Dish
                     index={1}
-                    counters={this.state.gameState.counters[dish2Index].toString()}
+                    counters={this.state.gameState.counters[dish2Index]}
                 />
             </Background>
         );
     }
 
     generateBox(i, gameIndex) {
+        const value = this.state.gameState.counters[gameIndex];
         return (
             <div id={`box-${gameIndex}`} className={`box box-${i}`} onClick={() => this.handleClick(gameIndex)}>
-                <CounterText counters={this.state.gameState.counters[gameIndex].toString()} />
+                <CounterBall counters={value} hover={true} />
             </div>
         )
     }
@@ -108,18 +101,22 @@ class HtmlBoard extends Component {
 function Dish(props) {
     return (
         <div id={`dish-${props.index}`} className='dish'>
-            <CounterText counters={props.counters} />
+            <CounterBall counters={props.counters} hover={false} />
         </div>
     )
 }
 
-function CounterText(props) {
-    const style = css({
-        color: 'red',
-    });
-
+function CounterBall(props) {
+    if(props.counters == 0)
+        return null;
+    const hoverClass = props.hover ? 'ball-hover' : '';
     return (
-        <span className='counters'>{props.counters}</span>
+        <section className="stage">
+        <figure className={`ball ${hoverClass}`}>
+            <span className="shadow" />
+            <span className="counter-text">{props.counters.toString()}</span>
+        </figure>
+        </section>
     )
 }
 
