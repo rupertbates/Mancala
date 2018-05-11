@@ -24,9 +24,12 @@ class HtmlBoard extends Component {
         const indexes = [...Array(6).keys()];
         const player1Boxes = indexes.map(i => this.generateBox(i, i + 1));
         const player2Boxes = indexes.map(i => this.generateBox(i, 13 - i));
+        const player1Active = this.state.gameState.player1Active;
         return (
             <div className="wrapper">
-                <ArrowDown visible={this.state.gameState.player1Active} />
+                <div className={`player-indicator player-1 ${player1Active ? '' : 'hidden'}`}>
+                    <span className="player-name">▼ Player 1 ▼</span>
+                </div>
                 <Board>
                     <Dish
                         index={0}
@@ -45,8 +48,9 @@ class HtmlBoard extends Component {
                         counters={this.state.gameState.counters[player1DishIndex]}
                     />
                 </Board>
-                <ArrowUp visible={!this.state.gameState.player1Active} />
-
+                <div className={`player-indicator player-2 ${player1Active ? 'hidden' : ''}`}>
+                    <span className="player-name">▲ Player 2 ▲</span>
+                </div>
             </div>
         );
     }
@@ -74,6 +78,7 @@ class HtmlBoard extends Component {
         const newCounters = Array.from(counters);
         const numInBox = counters[selectedIndex];
         newCounters[selectedIndex] = 0; //empty the selected box
+        counters[selectedIndex] = 0;
 
         //Add a counter to each of the following boxes
         for (var i = numInBox; i > 0; i--) {
