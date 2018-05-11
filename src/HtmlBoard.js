@@ -5,8 +5,8 @@ import { css } from 'emotion';
 import Layout from './layout';
 import { ArrowUp, ArrowDown } from './Arrows';
 
-const dish1Index = 0;
-const dish2Index = 7;
+const player2DishIndex = 0;
+const player1DishIndex = 7;
 class HtmlBoard extends Component {
 
     constructor(props) {
@@ -30,7 +30,7 @@ class HtmlBoard extends Component {
                 <Board>
                     <Dish
                         index={0}
-                        counters={this.state.gameState.counters[dish1Index]}
+                        counters={this.state.gameState.counters[player2DishIndex]}
                     />
                     <div className="both-rows">
                         <div className="row">
@@ -42,10 +42,11 @@ class HtmlBoard extends Component {
                     </div>
                     <Dish
                         index={1}
-                        counters={this.state.gameState.counters[dish2Index]}
+                        counters={this.state.gameState.counters[player1DishIndex]}
                     />
                 </Board>
                 <ArrowUp visible={!this.state.gameState.player1Active} />
+
             </div>
         );
     }
@@ -59,36 +60,50 @@ class HtmlBoard extends Component {
         )
     }
 
-    handleClick(gameIndex) {
-        if (this.wrongPlayerClicked(gameIndex)) {
+    handleClick(selectedIndex) {
+        if (this.wrongPlayerClicked(selectedIndex)) {
             alert('Wrong player!');
-            return;
+        } else {
+            this.doMove(selectedIndex);
         }
-        const ca = this.state.gameState.counters;
-        const newCounters = Array.from(ca);
+        
+    }
 
-        //TODO: Be more functional!
-        const numInBox = ca[gameIndex];
-        newCounters[gameIndex] = 0;
+    doMove(selectedIndex) {
+        const counters = this.state.gameState.counters;
+        const newCounters = Array.from(counters);
+        const numInBox = counters[selectedIndex];
+        newCounters[selectedIndex] = 0; //empty the selected box
+
+        //Add a counter to each of the following boxes
         for (var i = numInBox; i > 0; i--) {
-            const ci = this.circularIndex(i + gameIndex);
-            newCounters[ci] = ca[ci] + 1;
+            const ci = this.circularIndex(i + selectedIndex);
+            newCounters[ci] = counters[ci] + 1;
         }
+
+        const playerActive = this.finishedInHomeDish(selectedIndex, numInBox) ? this.state.gameState.player1Active : !this.state.gameState.player1Active;
+
         this.setState({
             gameState: {
-                player1Active: !this.state.gameState.player1Active,
+                player1Active: playerActive,
                 counters: newCounters,
             },
-            player1Boxes: this.state.player1Boxes,
-            player2Boxes: this.state.player2Boxes,
         })
+    }
+
+    finishedInHomeDish(selectedIndex, numInBox) {
+        const ci = this.circularIndex(selectedIndex + numInBox)
+        if(this.state.gameState.player1Active){
+            return ci === player1DishIndex
+        }
+        else return ci === player2DishIndex
     }
 
     wrongPlayerClicked(gameIndex) {
         if (this.state.gameState.player1Active) {
-            return gameIndex > dish2Index;
+            return gameIndex > player1DishIndex;
         }
-        return gameIndex < dish2Index;
+        return gameIndex < player1DishIndex;
     }
 
     circularIndex(i) {
