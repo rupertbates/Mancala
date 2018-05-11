@@ -3,6 +3,7 @@ import { Stage, Group, Layer, Ellipse, Rect, Text } from 'react-konva';
 import Konva from 'konva';
 import { css } from 'emotion';
 import Layout from './layout';
+import { ArrowUp, ArrowDown } from './Arrows';
 
 const dish1Index = 0;
 const dish2Index = 7;
@@ -23,26 +24,29 @@ class HtmlBoard extends Component {
         const indexes = [...Array(6).keys()];
         const player1Boxes = indexes.map(i => this.generateBox(i, i + 1));
         const player2Boxes = indexes.map(i => this.generateBox(i, 13 - i));
-
         return (
-            <Background>
-                <Dish
-                    index={0}
-                    counters={this.state.gameState.counters[dish1Index]}
-                />
-                <div className="both-rows">
-                    <div className="row">
-                        {player1Boxes}
+            <div className="wrapper">
+                <ArrowDown visible={this.state.gameState.player1Active} />
+                <Board>
+                    <Dish
+                        index={0}
+                        counters={this.state.gameState.counters[dish1Index]}
+                    />
+                    <div className="both-rows">
+                        <div className="row">
+                            {player1Boxes}
+                        </div>
+                        <div className="row">
+                            {player2Boxes}
+                        </div>
                     </div>
-                    <div className="row">
-                        {player2Boxes}
-                    </div>
-                </div>
-                <Dish
-                    index={1}
-                    counters={this.state.gameState.counters[dish2Index]}
-                />
-            </Background>
+                    <Dish
+                        index={1}
+                        counters={this.state.gameState.counters[dish2Index]}
+                    />
+                </Board>
+                <ArrowUp visible={!this.state.gameState.player1Active} />
+            </div>
         );
     }
 
@@ -107,20 +111,21 @@ function Dish(props) {
 }
 
 function CounterBall(props) {
-    if(props.counters == 0)
-        return null;
+    const hidden = props.counters == 0 ? 'hidden' : '';
     const hoverClass = props.hover ? 'ball-hover' : '';
     return (
-        <section className="stage">
-        <figure className={`ball ${hoverClass}`}>
-            <span className="shadow" />
-            <span className="counter-text">{props.counters.toString()}</span>
-        </figure>
-        </section>
+        <div className={hidden}>
+            <section className="stage">
+            <figure className={`ball ${hoverClass}`}>
+                <span className="shadow" />
+                <span className="counter-text">{props.counters.toString()}</span>
+            </figure>
+            </section>
+        </div>
     )
 }
 
-function Background(props) {
+function Board(props) {
     return (
         <div id='background' className='board'>
             {props.children}
