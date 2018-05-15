@@ -7,7 +7,12 @@ $ball-color-light: #ef7680;
 $ball-color-medium: #94050c;
 $ball-color-dark: #45060b;
 $hover-lighten-amount: 5%;
+.ball-wrapper {
+    position: relative;
+}
+
 .ball {
+    z-index: 0;
     display: inline-block;
     width: $ball-size;
     height: $ball-size;
@@ -15,11 +20,13 @@ $hover-lighten-amount: 5%;
     margin-left: 0;
     border-radius: 50%;
     background: radial-gradient(circle at 14px 16px, $ball-color-lighter, $ball-color-light 10%, $ball-color-medium 80%, $ball-color-dark 100%);
-  }
-  .ball-hover:hover {
+}
+
+.ball-hover:hover {
     background: radial-gradient(circle at 14px 16px, lighten($ball-color-lighter, $hover-lighten-amount), lighten($ball-color-light, $hover-lighten-amount) 10%, lighten($ball-color-medium, $hover-lighten-amount) 80%, lighten($ball-color-dark, $hover-lighten-amount) 100%);
-  }
-  .ball:before {
+}
+
+.ball:before {
     content: "";
     position: absolute;
     background: radial-gradient(circle at 5px 0px, #ffffff, rgba(255, 255, 255, 0) 18%);
@@ -31,12 +38,12 @@ $hover-lighten-amount: 5%;
     width: $ball-size;
     -webkit-filter: blur(5px);
     z-index: 2;
-  }
-  .ball:after {
+}
+
+.ball:after {
     width: $ball-size;
     height: $ball-size;
     content: "";
-    
     border-radius: 50%;
     background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8) 14%, rgba(255, 255, 255, 0) 24%);
     -webkit-transform: translateX(-80px) translateY(-90px) skewX(-20deg);
@@ -45,21 +52,22 @@ $hover-lighten-amount: 5%;
     -o-transform: translateX(-80px) translateY(-90px) skewX(-20deg);
     transform: translateX(-8px) translateY(-9px) skewX(-20deg);
     -webkit-filter: blur(10px);
-  }
- 
-  .ball .shadow {
-  position: absolute;
-  width: $shadow-size;
-  height: $shadow-size;
-  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
-  -webkit-transform: rotateX(90deg) translateZ(-150px);
-  -moz-transform: rotateX(90deg) translateZ(-150px);
-  -ms-transform: rotateX(90deg) translateZ(-150px);
-  -o-transform: rotateX(90deg) translateZ(-150px);
-  transform: rotateX(30deg) translateX(-25px) translateZ(-12px);
-  z-index: -1;
-  }
-  .stage {
+}
+
+.ball .shadow {
+    position: absolute;
+    width: $shadow-size;
+    height: $shadow-size;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
+    -webkit-transform: rotateX(90deg) translateZ(-150px);
+    -moz-transform: rotateX(90deg) translateZ(-150px);
+    -ms-transform: rotateX(90deg) translateZ(-150px);
+    -o-transform: rotateX(90deg) translateZ(-150px);
+    transform: rotateX(30deg) translateX(-25px) translateZ(-12px);
+    z-index: -1;
+}
+
+.stage {
     width: $ball-size;
     height: $ball-size;
     display: inline-block;
@@ -73,5 +81,4 @@ $hover-lighten-amount: 5%;
     -ms-perspective-origin: 50% 50%;
     -o-perspective-origin: 50% 50%;
     perspective-origin: 50% 50%;
-  }
-  
+}

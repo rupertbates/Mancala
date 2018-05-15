@@ -1,3 +1,6 @@
+html {
+  overflow: hidden; }
+
 body {
   text-align: center;
   color: white;
@@ -66,7 +69,6 @@ body {
   visibility: hidden; }
 
 .player-indicator {
-  animation-name: arrow-pulse;
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -90,7 +92,25 @@ body {
 .player-2 {
   margin-top: 20px; }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  line-height: 100%;
+  text-align: center;
+  background: #0006;
+  z-index: 2; }
+
+.ball-wrapper {
+  position: relative; }
+
 .ball {
+  z-index: 0;
   display: inline-block;
   width: 60px;
   height: 60px;

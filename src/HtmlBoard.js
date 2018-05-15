@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Stage, Group, Layer, Ellipse, Rect, Text } from 'react-konva';
-import Konva from 'konva';
-import { css } from 'emotion';
-import Layout from './layout';
-import { ArrowUp, ArrowDown } from './Arrows';
+import { moveCounter } from './animations';
+import CounterBall from './CounterBall';
+import Dish from './Dish';
+import Board from './Board';
+import { circularIndex, finishedInHomeDish } from './helpers'
+import { player1DishIndex, player2DishIndex } from './constants'
 
-const player2DishIndex = 0;
-const player1DishIndex = 7;
 class HtmlBoard extends Component {
 
     constructor(props) {
@@ -14,16 +13,17 @@ class HtmlBoard extends Component {
         this.state = {
             gameState: {
                 player1Active: true,
-                counters: [0, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5] //The number of counters in each cell, top left is 1
+                counters: [5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 0] //The number of counters in each cell, top left is 0
             },
+            flashText: "Testing",
         };
     }
 
     render() {
         //this.logGame();
         const indexes = [...Array(6).keys()];
-        const player1Boxes = indexes.map(i => this.generateBox(i, i + 1));
-        const player2Boxes = indexes.map(i => this.generateBox(i, 13 - i));
+        const player1Boxes = indexes.map(i => this.generateBox(i, i));
+        const player2Boxes = indexes.map(i => this.generateBox(i, 12 - i));
         const player1Active = this.state.gameState.player1Active;
         return (
             <div className="wrapper">
@@ -33,6 +33,7 @@ class HtmlBoard extends Component {
                 <Board>
                     <Dish
                         index={0}
+                        gameIndex={player2DishIndex}
                         counters={this.state.gameState.counters[player2DishIndex]}
                     />
                     <div className="both-rows">
@@ -45,12 +46,16 @@ class HtmlBoard extends Component {
                     </div>
                     <Dish
                         index={1}
+                        gameIndex={player1DishIndex}
                         counters={this.state.gameState.counters[player1DishIndex]}
                     />
                 </Board>
                 <div className={`player-indicator player-2 ${player1Active ? 'hidden' : ''}`}>
                     <span className="player-name">▲ Player 2 ▲</span>
                 </div>
+                {/* <div className='overlay'>
+                    {this.state.flashText}
+                </div> */}
             </div>
         );
     }
@@ -59,7 +64,7 @@ class HtmlBoard extends Component {
         const value = this.state.gameState.counters[gameIndex];
         return (
             <div id={`box-${gameIndex}`} className={`box box-${i}`} onClick={() => this.handleClick(gameIndex)}>
-                <CounterBall counters={value} hover={true} />
+                <CounterBall counters={value} hover={true} gameIndex={gameIndex} />
             </div>
         )
     }
@@ -68,12 +73,37 @@ class HtmlBoard extends Component {
         if (this.wrongPlayerClicked(selectedIndex)) {
             alert('Wrong player!');
         } else {
+            //this.doMoves(selectedIndex);
             this.doMove(selectedIndex);
         }
-        
+
+    }
+
+    doSingleMove(selectedIndex, numberofCountersMoved, remainingCounterToMove) {
+        console.log(`doSingleMove with selectedIndex: ${selectedIndex} numberofCountersMoved: ${numberofCountersMoved} remainingCounterToMove: ${remainingCounterToMove}`)
+        if(remainingCounterToMove === 0)
+            return;
+
+        moveCounter(selectedIndex, circularIndex(selectedIndex + numberofCountersMoved + 1), () =>
+        {
+            window.setTimeout(
+                this.doSingleMove(selectedIndex, numberofCountersMoved + 1, remainingCounterToMove - 1)
+                , 2000);
+        });
+    }
+
+    doMoves(selectedIndex){
+        const counters = this.state.gameState.counters;
+        const newCounters = Array.from(counters);
+        const numInBox = counters[selectedIndex];
+        //this.doSingleMove(selectedIndex, 0, numInBox);
+        for(var i = 1; i < numInBox; i++) {
+
+        }
     }
 
     doMove(selectedIndex) {
+        const player1Active = this.state.gameState.player1Active;
         const counters = this.state.gameState.counters;
         const newCounters = Array.from(counters);
         const numInBox = counters[selectedIndex];
@@ -82,11 +112,11 @@ class HtmlBoard extends Component {
 
         //Add a counter to each of the following boxes
         for (var i = numInBox; i > 0; i--) {
-            const ci = this.circularIndex(i + selectedIndex);
+            const ci = circularIndex(i + selectedIndex);
             newCounters[ci] = counters[ci] + 1;
         }
 
-        const playerActive = this.finishedInHomeDish(selectedIndex, numInBox) ? this.state.gameState.player1Active : !this.state.gameState.player1Active;
+        const playerActive = finishedInHomeDish(selectedIndex, numInBox, player1Active) ? player1Active : !player1Active;
 
         this.setState({
             gameState: {
@@ -96,61 +126,19 @@ class HtmlBoard extends Component {
         })
     }
 
-    finishedInHomeDish(selectedIndex, numInBox) {
-        const ci = this.circularIndex(selectedIndex + numInBox)
-        if(this.state.gameState.player1Active){
-            return ci === player1DishIndex
-        }
-        else return ci === player2DishIndex
-    }
-
     wrongPlayerClicked(gameIndex) {
         if (this.state.gameState.player1Active) {
             return gameIndex > player1DishIndex;
         }
         return gameIndex < player1DishIndex;
     }
-
-    circularIndex(i) {
-        if (i < this.state.gameState.counters.length)
-            return i;
-        return i - this.state.gameState.counters.length;
-    }
-
-    logGame() {
-        this.state.gameState.counters.forEach(e => console.log(e))
-    }
 }
 
-function Dish(props) {
-    return (
-        <div id={`dish-${props.index}`} className='dish'>
-            <CounterBall counters={props.counters} hover={false} />
-        </div>
-    )
+function getBallsToUpdate(selectedIndex, numOfCounters) {
+  return [...Array(numOfCounters).keys()];
 }
 
-function CounterBall(props) {
-    const hidden = props.counters == 0 ? 'hidden' : '';
-    const hoverClass = props.hover ? 'ball-hover' : '';
-    return (
-        <div className={hidden}>
-            <section className="stage">
-            <figure className={`ball ${hoverClass}`}>
-                <span className="shadow" />
-                <span className="counter-text">{props.counters.toString()}</span>
-            </figure>
-            </section>
-        </div>
-    )
+export {
+    HtmlBoard,
+  getBallsToUpdate
 }
-
-function Board(props) {
-    return (
-        <div id='background' className='board'>
-            {props.children}
-        </div>
-    )
-}
-
-export default HtmlBoard;
