@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { moveCounter } from './animations';
+import { moveAll, moveCounter } from './animations'
 import CounterBall from './CounterBall';
 import Dish from './Dish';
 import Board from './Board';
-import { circularIndex, finishedInHomeDish } from './helpers'
+import { circularIndex, finishedInHomeDish, getBallIdsToUpdate } from './helpers'
 import { player1DishIndex, player2DishIndex } from './constants'
 
 class HtmlBoard extends Component {
@@ -73,8 +73,8 @@ class HtmlBoard extends Component {
         if (this.wrongPlayerClicked(selectedIndex)) {
             alert('Wrong player!');
         } else {
-            //this.doMoves(selectedIndex);
-            this.doMove(selectedIndex);
+            this.doMoves(selectedIndex);
+            //this.doMove(selectedIndex);
         }
 
     }
@@ -94,12 +94,8 @@ class HtmlBoard extends Component {
 
     doMoves(selectedIndex){
         const counters = this.state.gameState.counters;
-        const newCounters = Array.from(counters);
         const numInBox = counters[selectedIndex];
-        //this.doSingleMove(selectedIndex, 0, numInBox);
-        for(var i = 1; i < numInBox; i++) {
-
-        }
+        moveAll(selectedIndex, getBallIdsToUpdate(selectedIndex, numInBox))
     }
 
     doMove(selectedIndex) {
@@ -111,7 +107,7 @@ class HtmlBoard extends Component {
         counters[selectedIndex] = 0;
 
         //Add a counter to each of the following boxes
-        for (var i = numInBox; i > 0; i--) {
+        for (let i = numInBox; i > 0; i--) {
             const ci = circularIndex(i + selectedIndex);
             newCounters[ci] = counters[ci] + 1;
         }
@@ -134,11 +130,6 @@ class HtmlBoard extends Component {
     }
 }
 
-function getBallsToUpdate(selectedIndex, numOfCounters) {
-  return [...Array(numOfCounters).keys()];
-}
-
 export {
     HtmlBoard,
-  getBallsToUpdate
 }

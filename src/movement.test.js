@@ -1,9 +1,15 @@
-import { getBallsToUpdate } from './HtmlBoard'
-import { finishedInHomeDish } from './helpers'
+import { finishedInHomeDish, getBallIdsToUpdate } from './helpers'
 
-describe('getBallsToUpdate', () => {
+describe('getBallIdsToUpdate', () => {
   it('should work', () => {
-    expect(3).toBe(3)
+    expect(getBallIdsToUpdate(0, 3))
+      .toEqual([1, 2, 3]);
+
+    expect(getBallIdsToUpdate(5, 3))
+      .toEqual([6, 7, 8]);
+
+    expect(getBallIdsToUpdate(12, 3))
+      .toEqual([13, 0, 1]);
   })
 })
 

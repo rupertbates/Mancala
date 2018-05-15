@@ -14,7 +14,13 @@ function  finishedInHomeDish(selectedIndex, numInBox, player1Active) {
   else return ci === player2DishIndex
 }
 
+function getBallIdsToUpdate(selectedIndex, numOfCounters) {
+  return [...Array(numOfCounters).keys()]
+    .map(i => circularIndex(selectedIndex + 1 + i));
+}
+
 export {
   circularIndex,
   finishedInHomeDish,
+  getBallIdsToUpdate,
 }
