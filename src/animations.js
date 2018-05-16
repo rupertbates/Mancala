@@ -1,29 +1,50 @@
 import { TimelineLite, TweenLite, Power2 } from 'gsap';
 
-function moveCounter(fromIndex, toIndex) {
+function moveFirstCounter(fromIndex, toIndex, callback) {
     const from = document.getElementById(`ball-${fromIndex}`)
-    const thisRect = from.getBoundingClientRect();
+    const fromRect = from.getBoundingClientRect();
     const to = document.getElementById(`ball-${toIndex}`)
-    const rect = to.getBoundingClientRect();
+    const toRect = to.getBoundingClientRect();
 
     from.style.zIndex = 2;
     to.style.zIndex = 1;
 
-    return TweenLite.to(from, 0.5,
+    TweenLite.to(from, 0.5,
         {
             z: 2,
-            x: (rect.left - thisRect.left),
-            y: (rect.top - (thisRect.top)),
+            x: (toRect.left - fromRect.left),
+            y: (toRect.top - fromRect.top),
+            onComplete: callback,
         });
 }
 
-function moveAll(fromIndex, toArray) {
-  const tl = new TimelineLite();
-  toArray.forEach(i => tl.add(moveCounter(fromIndex, i)) )
+function moveNextCounter (fromIndex, toIndex, callback) {
+    const moving = document.getElementById("ball-99")
+    const movingRect = moving.getBoundingClientRect()
+    const from = document.getElementById(`ball-${fromIndex}`)
+    const fromRect = from.getBoundingClientRect();
+    const to = document.getElementById(`ball-${toIndex}`)
+    const toRect = to.getBoundingClientRect();
+
+    from.style.zIndex = 2;
+    to.style.zIndex = 1;
+
+    const tl = new TimelineLite({onComplete: callback});
+    //Here we animate a separate ball, not the original one which was clicked
+    tl.toLocaleString()
+    tl.fromTo('#ball-99', 0.5,
+        {
+            x: fromRect.left,
+            y: fromRect.top,
+        },
+        {
+            x: toRect.left,
+            y: toRect.top,
+        });
+    return tl;
 }
 
-
 export {
-    moveCounter,
-    moveAll
+    moveFirstCounter,
+    moveNextCounter,
 }
