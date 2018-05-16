@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { moveAll, moveCounter } from './animations'
-import CounterBall from './CounterBall';
 import Dish from './Dish';
 import Board from './Board';
+import Box from './Box';
 import { circularIndex, finishedInHomeDish, getBallIdsToUpdate } from './helpers'
 import { player1DishIndex, player2DishIndex } from './constants'
 
@@ -22,8 +22,23 @@ class HtmlBoard extends Component {
     render() {
         //this.logGame();
         const indexes = [...Array(6).keys()];
-        const player1Boxes = indexes.map(i => this.generateBox(i, i));
-        const player2Boxes = indexes.map(i => this.generateBox(i, 12 - i));
+        const onClick = this.handleClick.bind(this);
+        const player1Boxes = indexes.map(i => (
+            <Box
+                layoutIndex={i}
+                gameIndex={i}
+                value={this.state.gameState.counters[i]}
+                onClick={onClick}
+            />
+        ));
+        const player2Boxes = indexes.map(i => (
+            <Box
+                layoutIndex={i}
+                gameIndex={12 - i}
+                value={this.state.gameState.counters[12 - i]}
+                onClick={onClick}
+            />
+        ));
         const player1Active = this.state.gameState.player1Active;
         return (
             <div className="wrapper">
@@ -58,15 +73,6 @@ class HtmlBoard extends Component {
                 </div> */}
             </div>
         );
-    }
-
-    generateBox(i, gameIndex) {
-        const value = this.state.gameState.counters[gameIndex];
-        return (
-            <div id={`box-${gameIndex}`} className={`box box-${i}`} onClick={() => this.handleClick(gameIndex)}>
-                <CounterBall counters={value} hover={true} gameIndex={gameIndex} />
-            </div>
-        )
     }
 
     handleClick(selectedIndex) {
