@@ -29,19 +29,19 @@ function moveNextCounter (fromIndex, toIndex, callback) {
     from.style.zIndex = 2;
     to.style.zIndex = 1;
 
-    const tl = new TimelineLite({onComplete: callback});
     //Here we animate a separate ball, not the original one which was clicked
-    tl.toLocaleString()
-    tl.fromTo('#ball-99', 0.5,
+    moving.style.top = '67px'
+
+    TweenLite.fromTo('#ball-99', 0.5,
         {
-            x: fromRect.left,
-            y: fromRect.top,
+            x: fromRect.x,
+            y: fromRect.y,
         },
         {
-            x: toRect.left,
-            y: toRect.top,
+            x: (toRect.left),
+            y: (toRect.top),
+            onComplete: callback,
         });
-    return tl;
 }
 
 export {

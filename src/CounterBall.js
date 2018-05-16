@@ -4,7 +4,7 @@ export default function CounterBall(props) {
     const hidden = props.counters === 0 ? 'hidden' : '';
     const hoverClass = props.hover ? 'ball-hover' : '';
     return (
-        <div id={`ball-${props.gameIndex}`} className={`ball-wrapper ${hidden}`}>
+        <div id={`ball-${props.gameIndex}`} className={`${props.classModifier} ball-wrapper ${hidden}`}>
             <section className="stage">
             <figure className={`ball ${hoverClass}`}>
                 <span className="shadow" />

@@ -68,15 +68,15 @@ class HtmlBoard extends Component {
                         gameIndex={player1DishIndex}
                         counters={this.state.counters[player1DishIndex]}
                     />
-                    <CounterBall
-                        counters={this.state.pendingMoves ? this.state.pendingMoves.amountLeft : 0}
-                        gameIndex={99}
-                    />
                 </Board>
                 <div className={`player-indicator player-2 ${player1Active ? 'hidden' : ''}`}>
                     <span className="player-name">▲ Player 2 ▲</span>
                 </div>
-
+                <CounterBall
+                    counters={this.state.pendingMoves ? this.state.pendingMoves.amountLeft : 0}
+                    gameIndex={99}
+                    classModifier="animation-ball"
+                />
                 {/* <div className='overlay'>
                     {this.state.flashText}
                 </div> */}

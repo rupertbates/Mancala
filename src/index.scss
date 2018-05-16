@@ -127,4 +127,9 @@ body {
   z-index: 2;
 }
 
+#ball-99 {
+  position: absolute;
+  z-index: 99;
+}
+
 @import '_glass-ball';
