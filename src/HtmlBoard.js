@@ -3,7 +3,7 @@ import { moveFirstCounter, moveNextCounter } from './animations'
 import Dish from './Dish'
 import Board from './Board'
 import Box from './Box'
-import { circularIndex, finishedInHomeDish } from './helpers'
+import { circularIndex } from './helpers'
 import { player1DishIndex, player2DishIndex } from './constants'
 import CounterBall from './CounterBall'
 
@@ -94,7 +94,6 @@ class HtmlBoard extends Component {
         if (this.wrongPlayerClicked(selectedIndex)) {
             alert('Wrong player!')
         } else {
-            //this.doMoves(selectedIndex);
             this.doFirstMove(selectedIndex)
         }
 
@@ -108,13 +107,8 @@ class HtmlBoard extends Component {
         const ci = circularIndex(pendingMoves.from + 1)
         newCounters[ci] = counters[ci] + 1
 
-        const player1Active = this.state.player1Active
-        const finished = pendingMoves.amountLeft === 1;
-        // Switch players if we have finished the move and the move didn't end in the current players home dish
-        const playerActive = finished && finishedInHomeDish(pendingMoves.originalIndex, pendingMoves.originalNum, player1Active) ? player1Active : !player1Active
-
         const callback = () => this.setState({
-            player1Active: playerActive,
+            player1Active: this.isPlayer1Active(ci, pendingMoves.amountLeft),
             counters: newCounters,
             pendingMoves: {
                 originalIndex: pendingMoves.originalIndex,
@@ -141,13 +135,8 @@ class HtmlBoard extends Component {
         const ci = circularIndex(selectedIndex + 1)
         newCounters[ci] = counters[ci] + 1
 
-        const player1Active = this.state.player1Active
-        const finished = numInBox === 1;
-        // Switch players if we have finished the move and the move didn't end in the current players home dish
-        const playerActive = finished && finishedInHomeDish(selectedIndex, numInBox, player1Active) ? player1Active : !player1Active
-
         const callback = () => this.setState({
-            player1Active: playerActive,
+            player1Active: this.isPlayer1Active(ci, numInBox),
             counters: newCounters,
             pendingMoves: {
                 originalIndex: selectedIndex,
@@ -160,6 +149,23 @@ class HtmlBoard extends Component {
         //animate the movement
         moveFirstCounter(selectedIndex, circularIndex(selectedIndex + 1), callback.bind(this))
 
+    }
+
+    finishedInHomeDish(circularIndex) {
+        if(this.state.player1Active){
+            return circularIndex === player1DishIndex
+        }
+        else return circularIndex === player2DishIndex
+    }
+
+    isPlayer1Active(circularIndex, numInBox) {
+        const player1Active = this.state.player1Active
+        const finished = numInBox === 1;
+        // Switch players if we have finished the move and the move didn't end in the current players home dish
+        if (!finished)
+            return player1Active;
+
+        return this.finishedInHomeDish(circularIndex) ? player1Active : !player1Active
     }
 
     wrongPlayerClicked (gameIndex) {

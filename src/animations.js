@@ -20,7 +20,6 @@ function moveFirstCounter(fromIndex, toIndex, callback) {
 
 function moveNextCounter (fromIndex, toIndex, callback) {
     const moving = document.getElementById("ball-99")
-    const movingRect = moving.getBoundingClientRect()
     const from = document.getElementById(`ball-${fromIndex}`)
     const fromRect = from.getBoundingClientRect();
     const to = document.getElementById(`ball-${toIndex}`)
