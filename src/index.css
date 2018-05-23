@@ -107,6 +107,7 @@ body {
   z-index: 2; }
 
 #ball-99 {
+  top: 67px;
   position: absolute;
   z-index: 99; }
 
